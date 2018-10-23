@@ -5,8 +5,7 @@ Anti-Phishing tool is a simple python script tool that allows you to flood phish
 # How to use #
 
 *  1: Download the [Anti-Phisher.zip](/EwyBoy/Anti-Phishing-Tool/archive/master.zip)
-*  2: Run the Anti-Phisher Tool, but don't type anything yet.
-*(Make sure to run the exe inside the default folder it came with)
+*  2: Run the Anti-Phisher Tool, but don't type anything yet. *(Make sure to run the exe inside the default folder it came with)
 *  3: Now find a phisher website. I found one in my e-mail that looks like this:
 
 ![](https://i.imgur.com/W5y3439.jpg)
