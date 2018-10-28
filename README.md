@@ -36,7 +36,7 @@ The guide below will teach you how to use the Anti-Phishing Tool, and how to ext
 
 ![](https://i.imgur.com/CTOVjxS.jpg)
 
-*  13: Copy everything from the text before the ":" **NOT THE EMAIL YOU WROTE**
+*  13: Copy everything from the text before the ":" **NOT THE LOGIN-INFO YOU PROVIDED**
 *(this can be everything from login_email to 424fg23gfg4gfh23ggv32 depending on their code)*
 *  14: Paste this string into the input in the Anti-Pisher Tool command line window.
 *  15: Now do the same for the password section. Same rules as above applies.
