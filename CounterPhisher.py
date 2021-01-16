@@ -9,7 +9,7 @@ import threading
 from requests.exceptions import SSLError
 
 
-def generateRandomName():
+def generate_random_name():
     event = random.randint(0, 4)
 
     if event == 0:
@@ -22,9 +22,8 @@ def generateRandomName():
         return str(random.choice(names)).lower() + random.choice(string.digits) + random.choice(string.digits)
 
 
-def generateRandomPassword():
+def generate_random_password():
     event = random.randint(0, 6)
-
     if event == 0:
         return ''.join(random.choice(chars) for i in range(random.randint(7, 15)))
     elif event in [1, 2]:
@@ -36,25 +35,16 @@ def generateRandomPassword():
 
 
 def run():
-    while True:
-        username = generateRandomName() + '@' + random.choice(emails) + '.' + random.choice(ext)
-        password = generateRandomPassword()
-
+    run_thread = True
+    while run_thread:
+        username = generate_random_name() + '@' + random.choice(emails) + '.' + random.choice(ext)
+        password = generate_random_password()
         try:
             r = requests.post(url, allow_redirects=False, data={
                 str(formDataNameLogin): username,
                 str(formDataNamePass): password,
             })
-
-            print(r.status_code)
-            print('Sending username: %s with password %s' % (username, password))
-            print(url + '\n')
-
-            if r.status_code > 400:
-                print('HTTP Error code: %s' % r.status_code)
-                input()
-                exit()
-
+            print('[Result: %s] Sent username: %s with password %s ' % (r.status_code, username, password))
         except SSLError as e:
             print('Error: URL can no longer be reached..')
         except Exception as e:
