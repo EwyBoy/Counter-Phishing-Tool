@@ -34,8 +34,7 @@ def generate_random_password():
 
 
 def run():
-    run_thread = True
-    while run_thread:
+    while True:
         username = generate_random_name() + '@' + random.choice(emails) + '.' + random.choice(ext)
         password = generate_random_password()
         try:
