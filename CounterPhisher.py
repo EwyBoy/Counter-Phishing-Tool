@@ -11,7 +11,6 @@ from requests.exceptions import SSLError
 
 def generate_random_name():
     event = random.randint(0, 4)
-
     if event == 0:
         return str(random.choice(names)).lower()
     elif event in [1, 2]:
@@ -44,7 +43,7 @@ def run():
                 str(formDataNameLogin): username,
                 str(formDataNamePass): password,
             })
-            print('[Result: %s] Sent username: %s with password %s ' % (r.status_code, username, password))
+            print('[Result: %s] -- [USERNAME: %s] -- [PASSWORD: %s]' % (r.status_code, username, password))
         except SSLError as e:
             print('Error: URL can no longer be reached..')
         except Exception as e:
