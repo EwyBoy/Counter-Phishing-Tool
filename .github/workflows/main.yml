@@ -39,14 +39,14 @@ jobs:
                     -   os: macos-latest
                         TARGET: macos
                         CMD_BUILD: >
-                            pyinstaller -F -w -n counterphisher -i assets/images/fish.icns cli.py &&
+                            pyinstaller -F -w -n counterphisher -i assets/images/fish.icns counter_phisher.py &&
                             cd dist/ &&
                             zip -r9 counterphisher counterphisher.app/
                         OUT_FILE_NAME: counterphisher.zip
                         ASSET_MIME: application/zip
                     -   os: windows-latest
                         TARGET: windows
-                        CMD_BUILD: pyinstaller -F -w -n counterphisher -i assets/images/fish.ico cli.py
+                        CMD_BUILD: pyinstaller -F -w -n counterphisher -i assets/images/fish.ico counter_phisher.py
                         OUT_FILE_NAME: counterphisher.exe
                         ASSET_MIME: application/vnd.microsoft.portable-executable
         steps:
