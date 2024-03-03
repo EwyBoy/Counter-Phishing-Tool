@@ -3,7 +3,7 @@ name: Build
 on:
     push:
         tags:
-            - 'v3.0.0-pre3' # Push events to matching v*, i.e. v1.0, v20.15.10
+            - 'v3.0.0-pre4' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
     
