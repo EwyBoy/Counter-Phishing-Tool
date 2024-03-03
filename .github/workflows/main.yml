@@ -3,7 +3,7 @@ name: Build
 on:
     push:
         tags:
-            - 'v3.0.0-pre2' # Push events to matching v*, i.e. v1.0, v20.15.10
+            - 'v3.0.0-pre3' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
     
@@ -39,14 +39,14 @@ jobs:
                     -   os: macos-latest
                         TARGET: macos
                         CMD_BUILD: >
-                            pyinstaller -F -w -n counterphisher -i assets/images/fish.icns counter_phisher.py &&
+                            pyinstaller -F -w -n counterphisher -i assets/images/phish.icns counter_phisher.py &&
                             cd dist/ &&
                             zip -r9 counterphisher counterphisher.app/
                         OUT_FILE_NAME: counterphisher.zip
                         ASSET_MIME: application/zip
                     -   os: windows-latest
                         TARGET: windows
-                        CMD_BUILD: pyinstaller -F -w -n counterphisher -i assets/images/fish.ico counter_phisher.py
+                        CMD_BUILD: pyinstaller -F -w -n counterphisher -i assets/images/phish.ico counter_phisher.py
                         OUT_FILE_NAME: counterphisher.exe
                         ASSET_MIME: application/vnd.microsoft.portable-executable
         steps:
