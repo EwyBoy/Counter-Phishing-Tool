@@ -16,43 +16,41 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-        python-version: [3.11]
+        python-version: [3.11]  # You can change the Python version as needed
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Modify this command as per your requirements
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Modify this command as per your requirements
 
-      - name: Build with PyInstaller
-        run: |
-          pyinstaller --onefile --name counter_phisher --icon assets/images/fish.ico counter_phisher.py
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller --onefile --name counter_phisher --icon assets/images/fish.ico counter_phisher.py
+        # Adjusted for different operating systems
+        if ($env:GITHUB_RUNNER_OS -eq "Windows")
+        {
+          mv dist\counter_phisher.exe dist\counter_phisher_windows.exe
+        }
+        elseif ($env:GITHUB_RUNNER_OS -eq "macOS")
+        {
+          mv dist/counter_phisher dist/counter_phisher_mac
+        }
+        else
+        {
+          mv dist/counter_phisher dist/counter_phisher_linux
+        }
 
-      - name: Rename executable for Windows
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: |
-          Move-Item -Path dist\counter_phisher.exe -Destination dist\counter_phisher_windows.exe
-
-      - name: Rename executable for macOS
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: |
-          Move-Item -Path dist/counter_phisher -Destination dist/counter_phisher_mac
-
-      - name: Rename executable for Linux
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: |
-          Move-Item -Path dist/counter_phisher -Destination dist/counter_phisher_linux
-
-      - name: Archive artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: counter_phisher
-          path: dist/counter_phisher*
+    - name: Archive artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: counter_phisher
+        path: dist/counter_phisher*  # Adjusted to include files with extensions
