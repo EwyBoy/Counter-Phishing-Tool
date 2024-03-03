@@ -36,11 +36,6 @@ jobs:
       run: |
         pyinstaller --onefile --name counter_phisher --i assets/images/fish.ico counter_phisher.py
         
-    - name: Rename artifact for Windows
-      if: matrix.os == 'windows-latest'
-      run: |
-        Move-Item dist/counter_phisher dist/counter_phisher.exe
-        
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
