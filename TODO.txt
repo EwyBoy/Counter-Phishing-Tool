@@ -1,5 +1,0 @@
-# TODO #
-
-* Increase variety for emails & passwords
-* option for random usernames
-* Auto pull the form data variables
