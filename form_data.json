@@ -1,5 +1,5 @@
 {
-  "example_payload": "This is an example payload",
+  "example_payload": "This is an example payload, capture the request and replace it with your own",
   "user[email]": "@RANDOM_EMAIL",
   "user[password]": "@RANDOM_PASSWORD"
 }
