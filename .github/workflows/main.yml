@@ -12,50 +12,37 @@ jobs:
   build:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    
+
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
         python-version: [3.11]
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      
-      - name: Build with PyInstaller
-        run: |
-          if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            # Use PowerShell script for Windows
-            if ($env:RUNNER_OS -eq "Windows") {
-              pyinstaller --onefile --name counter_phisher.exe counter_phisher.py
-            }
-            elseif ($env:RUNNER_OS -eq "macOS") {
-              pyinstaller --onefile --name counter_phisher.app counter_phisher.py
-            }
-            elseif ($env:RUNNER_OS -eq "Linux") {
-              pyinstaller --onefile --name counter_phisher counter_phisher.py
-            }
-            else {
-              Write-Host "Unsupported OS"
-              exit 1
-            }
-          else
-            # For macOS and Linux, keep the existing commands
-            pyinstaller --onefile --name counter_phisher.py counter_phisher.py
-          fi
-      
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: counter_phisher
-          path: dist/counter_phisher
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller --onefile --name counter_phisher --i assets/images/fish.ico counter_phisher.py
+        
+    - name: Rename artifact for Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        Move-Item dist/counter_phisher dist/counter_phisher.exe
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: counter_phisher-${{ matrix.os }}-py${{ matrix.python-version }}
+        path: dist/
