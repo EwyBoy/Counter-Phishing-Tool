@@ -1,7 +1,9 @@
+import datetime
 import json
 import random
 import string
 import threading
+import uuid
 
 import requests
 from requests.exceptions import SSLError
@@ -91,11 +93,26 @@ class CredentialGenerator:
     def generate_random_boolean(self):
         return str(random.choice([True, False]))
 
-    def generate_random_word(self, length=6):
-        return ''.join(random.choice(self.dictionary) for _ in range(length))
+    def generate_random_word(self):
+        return random.choice(self.dictionary)
 
     def generate_random_letter(self):
         return random.choice(string.ascii_letters)
+
+    def generate_random_string(self, length=6):
+        return ''.join(random.choice(string.ascii_letters) for _ in range(length))
+
+    def generate_random_date(self):
+        return f'{random.randint(1, 31)}/{random.randint(1, 12)}/{random.randint(1900, datetime.date.today().year)}'
+
+    def generate_random_ip(self):
+        return f'{random.randint(1, 255)}.{random.randint(1, 255)}.{random.randint(1, 255)}.{random.randint(1, 255)}'
+
+    def generate_random_url(self):
+        return f'https://wwww.{self.generate_random_word()}.{random.choice(self.extensions)}'
+
+    def generate_random_uuid(self):
+        return str(uuid.uuid4())
 
 
 class CredentialTester:
@@ -119,6 +136,11 @@ class CredentialTester:
                     credential_generator.generate_random_surname() if '@RANDOM_SURNAME' in value else
                     credential_generator.generate_random_word() if '@RANDOM_WORD' in value else
                     credential_generator.generate_random_letter() if '@RANDOM_LETTER' in value else
+                    credential_generator.generate_random_string() if '@RANDOM_STRING' in value else
+                    credential_generator.generate_random_date() if '@RANDOM_DATE' in value else
+                    credential_generator.generate_random_ip() if '@RANDOM_IP' in value else
+                    credential_generator.generate_random_url() if '@RANDOM_URL' in value else
+                    credential_generator.generate_random_uuid() if '@RANDOM_UUID' in value else
                     int(value) if isinstance(value, str) and value.isdigit() else
                     float(value) if isinstance(value, str) and value.replace('.', '', 1).isdigit() else
                     value

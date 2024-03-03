@@ -46,6 +46,9 @@ The `form_data.json` file contains the payload to be sent to the phishing websit
 - `@RANDOM_SURNAME`: Generates a random surname.
 - `@RANDOM_WORD`: Generates a random word.
 - `@RANDOM_LETTER`: Generates a random letter.
+- `@RANDOM_IP`: Generates a random IP address.
+- `@RANDOM_URL`: Generates a random URL.
+- `@RANDOM_UUID`: Generates a random UUID.
 
 ## Setup
 1. **Clone the Repository**: `git clone https://github.com/EwyBoy/Counter-Phishing-Tool.git`

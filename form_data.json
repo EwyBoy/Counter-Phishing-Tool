@@ -1,16 +1,5 @@
 {
-  "utf8": "✓",
-  "authenticity_token": "2NJrABvp8WWhr8ogtkrXI1LtR5lukAy1J-fNE-LcjF8yRYdEjb8AVZ-MamSR41lskAiTGEI2cyXkAio1zlaS5A",
+  "example_payload": "This is an example payload",
   "user[email]": "@RANDOM_EMAIL",
-  "user[password]": "@RANDOM_PASSWORD",
-  "user[remember_me]": "@RANDOM_NUMBER",
-  "user[remember_me1]": "@RANDOM_DIGIT",
-  "user[remember_me2]": "@RANDOM_FIRSTNAME",
-  "user[remember_me3]": "@RANDOM_FIRSTNAME_MALE",
-  "user[remember_me4]": "@RANDOM_FIRSTNAME_FEMALE",
-  "user[remember_me5]": "@RANDOM_SURNAME",
-  "user[remember_me6]": "@RANDOM_WORD",
-  "user[remember_me7]": "@RANDOM_LETTER",
-  "user[remember_me8]": "@RANDOM_BOOLEAN",
-  "commit": "Log in"
+  "user[password]": "@RANDOM_PASSWORD"
 }
