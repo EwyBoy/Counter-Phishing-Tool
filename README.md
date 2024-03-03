@@ -26,8 +26,10 @@ The `form_data.json` file contains the payload to be sent to the phishing websit
 ### Example
 ```json
 {
+  "foo": 69,
   "email": "@RANDOM_EMAIL",
-  "password": "@RANDOM_PASSWORD"
+  "password": "@RANDOM_PASSWORD",
+  "bar": false
 }
 ```
 
