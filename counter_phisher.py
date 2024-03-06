@@ -8,6 +8,9 @@ import uuid
 import requests
 from requests.exceptions import SSLError
 
+# Added imports
+import logging, sys, os
+from test_server import srv
 
 class CredentialGenerator:
     def __init__(self):
@@ -119,8 +122,28 @@ class CredentialTester:
     def __init__(self, target_url, login_form_data):
         self.url = target_url
         self.form_data = login_form_data
+        self.success_count = 0
+        self.records_sent = 0
+        self.successful_requests = []
+        self.log_mutex = threading.Lock()
+        self.success_count_mutex = threading.Lock()
+        self.record_count_mutex = threading.Lock()
+        self.success_array_mutex = threading.Lock()
+        self.printed_results = False
 
+    def update_success_count(self):
+        with self.success_count_mutex:
+            self.success_count += 1
+
+    def update_records_sent(self):
+        with self.record_count_mutex:
+            self.records_sent += 1
+
+    def add_successful_request(self, request):
+        with self.success_array_mutex:
+            self.successful_requests.append(request)
     def try_credentials(self):
+        logger = logging.getLogger("main-app")
         try:
             parsed_form_data = {
                 key: (
@@ -150,22 +173,67 @@ class CredentialTester:
 
             r = requests.post(self.url, allow_redirects=False, data=parsed_form_data)
 
-            print(f'{r.status_code} {r.reason} - {parsed_form_data}')
+            if r.status_code == 200:
+                with self.log_mutex:
+                    logger.info(f'SUCCESS -- [Record: {self.records_sent}] -- {r.status_code} -- {r.reason} - {parsed_form_data}')
+                self.update_success_count()
+                self.update_records_sent()
+                self.add_successful_request(r)
+            else:
+                with self.log_mutex:
+                    logger.warn(f'[Record:{self.records_sent}]{r.status_code} {r.reason} - {parsed_form_data}')
+                # print(f'[Record:{self.records_sent}]{r.status_code} {r.reason} - {parsed_form_data}')
+                self.update_records_sent()
 
         except SSLError:
-            print('Error: URL can no longer be reached..')
+            logger.critical('Error: URL can no longer be reached..')
+            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
+            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
+            sys.exit(0)
+            # print('Error: URL can no longer be reached..')
+
+        except ConnectionAbortedError:
+            logger.critical('Error: URL can no longer be reached..')
+            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
+            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
+            sys.exit(0)
+
+        except requests.ConnectionError:
+            logger.critical('Error: URL can no longer be reached..')
+            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
+            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
+            sys.exit(0)
+
         except Exception as e:
-            print('Error: {0}'.format(e))
+            logger.critical('Error: {0}'.format(e))
+            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
+            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
+            sys.exit(0)
+            # print('Error: {0}'.format(e))
 
 
 def run(credential_test):
     while True:
         credential_test.try_credentials()
 
-
 if __name__ == '__main__':
-    url = input('Form URL: ')
-    form_data_file = 'form_data.json'
+    test_server = False
+    srv.setup_logger()
+
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    form_data_filename = "form_data.json"
+    form_data_file = os.path.join(current_directory, form_data_filename)
+    try:
+        if sys.argv[1] == '-ts':
+            test_server = True
+    except Exception:
+        pass
+
+    url = None
+    if test_server:
+        url = 'http://localhost:25565/'
+    else:
+        url = input('Form URL: ')
     threads = int(input('Threads: '))
 
     with open(form_data_file, 'r') as f:
@@ -173,7 +241,12 @@ if __name__ == '__main__':
 
     credential_generator = CredentialGenerator()
     credential_tester = CredentialTester(url, form_data)
-
-    for _ in range(threads):
-        t = threading.Thread(target=run, args=(credential_tester,))
-        t.start()
+    running_threads = []
+    try:
+        for _ in range(threads):
+            t = threading.Thread(target=run, args=(credential_tester,))
+            t.start()
+            running_threads.append(t)
+    except KeyboardInterrupt:
+        for t in running_threads:
+            t.join()

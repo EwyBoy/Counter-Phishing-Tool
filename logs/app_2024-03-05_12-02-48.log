@@ -1,0 +1,25 @@
+2024-03-05 12:02:51,827 - INFO - SUCCESS -- [Record: 0] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'kevin@gmail.cn', 'user[password]': None}
+2024-03-05 12:02:51,830 - INFO - SUCCESS -- [Record: 1] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'antwan@me.mil', 'user[password]': '8515'}
+2024-03-05 12:02:51,831 - INFO - SUCCESS -- [Record: 2] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'donell@telnet.br', 'user[password]': 'scope0'}
+2024-03-05 12:02:51,833 - INFO - SUCCESS -- [Record: 3] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'faizon@outlook.az', 'user[password]': 'capucine'}
+2024-03-05 12:02:51,834 - INFO - SUCCESS -- [Record: 4] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'joey_layne_ramsbottom@telnet.org', 'user[password]': 'odette'}
+2024-03-05 12:02:53,874 - INFO - SUCCESS -- [Record: 5] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'rosezetta-billye@gmail.dk', 'user[password]': '290199'}
+2024-03-05 12:02:53,877 - INFO - SUCCESS -- [Record: 6] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'renarowena@telnet.uk', 'user[password]': 'teh0123'}
+2024-03-05 12:02:53,878 - INFO - SUCCESS -- [Record: 7] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'suzi@comcast.nl', 'user[password]': 'joyride3'}
+2024-03-05 12:02:53,889 - INFO - SUCCESS -- [Record: 8] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'lucrezia@outlook.gov', 'user[password]': '7A3FZDdPJJf'}
+2024-03-05 12:02:53,890 - INFO - SUCCESS -- [Record: 9] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'faustina@telnet.no', 'user[password]': '09111987'}
+2024-03-05 12:02:55,921 - INFO - SUCCESS -- [Record: 10] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'elimelech@icloud.ca', 'user[password]': None}
+2024-03-05 12:02:55,923 - INFO - SUCCESS -- [Record: 11] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'annalyn@sbcglobal.co', 'user[password]': 'lagalaxy'}
+2024-03-05 12:02:55,938 - INFO - SUCCESS -- [Record: 12] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'arsh@hotmail.biz', 'user[password]': 'Cromwellian0'}
+2024-03-05 12:02:55,941 - INFO - SUCCESS -- [Record: 13] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'egan33@hotmail.org', 'user[password]': '060576'}
+2024-03-05 12:02:55,941 - INFO - SUCCESS -- [Record: 14] -- 200 -- OK - {'example_payload': 'This is an example payload, capture the request and replace it with your own', 'user[email]': 'chaneyvalentine@gmail.ca', 'user[password]': 'fynjyjdf'}
+2024-03-05 12:02:57,994 - CRITICAL - Error: URL can no longer be reached..
+2024-03-05 12:02:57,994 - CRITICAL - Error: URL can no longer be reached..
+2024-03-05 12:02:57,995 - CRITICAL - Error: URL can no longer be reached..
+2024-03-05 12:02:57,995 - CRITICAL - Error: URL can no longer be reached..
+2024-03-05 12:02:57,998 - INFO - TOTAL Records Sent: 15. Total Successful Records Sent: 15
+2024-03-05 12:02:57,996 - CRITICAL - Error: URL can no longer be reached..
+2024-03-05 12:02:57,997 - INFO - TOTAL Records Sent: 15. Total Successful Records Sent: 15
+2024-03-05 12:02:57,998 - INFO - TOTAL Records Sent: 15. Total Successful Records Sent: 15
+2024-03-05 12:02:57,996 - INFO - TOTAL Records Sent: 15. Total Successful Records Sent: 15
+2024-03-05 12:02:57,999 - INFO - TOTAL Records Sent: 15. Total Successful Records Sent: 15
