@@ -2,3 +2,4 @@ requests~=2.31.0
 pyinstaller
 keyboard
 datetime
+tqdm

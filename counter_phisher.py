@@ -9,7 +9,7 @@ import requests
 from requests.exceptions import SSLError
 
 # Added imports
-import logging, sys, os
+import logging, sys, os, json, time, tqdm
 from test_server import srv
 
 class CredentialGenerator:
@@ -135,9 +135,11 @@ class CredentialTester:
         with self.success_count_mutex:
             self.success_count += 1
 
-    def update_records_sent(self):
+    def get_record_number(self):
         with self.record_count_mutex:
+            hold = self.records_sent
             self.records_sent += 1
+            return hold
 
     def add_successful_request(self, request):
         with self.success_array_mutex:
@@ -174,46 +176,35 @@ class CredentialTester:
             r = requests.post(self.url, allow_redirects=False, data=parsed_form_data)
 
             if r.status_code == 200:
+                record_number = self.get_record_number()
                 with self.log_mutex:
-                    logger.info(f'SUCCESS -- [Record: {self.records_sent}] -- {r.status_code} -- {r.reason} - {parsed_form_data}')
+                    logger.info(f'SUCCESS -- [Record: {record_number}] -- {r.status_code} -- {r.reason} - {parsed_form_data}')
                 self.update_success_count()
-                self.update_records_sent()
-                self.add_successful_request(r)
+                self.add_successful_request({'record': record_number, 'form-data': parsed_form_data})
             else:
                 with self.log_mutex:
                     logger.warn(f'[Record:{self.records_sent}]{r.status_code} {r.reason} - {parsed_form_data}')
                 # print(f'[Record:{self.records_sent}]{r.status_code} {r.reason} - {parsed_form_data}')
                 self.update_records_sent()
 
-        except SSLError:
-            logger.critical('Error: URL can no longer be reached..')
-            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
-            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
-            sys.exit(0)
-            # print('Error: URL can no longer be reached..')
-
-        except ConnectionAbortedError:
-            logger.critical('Error: URL can no longer be reached..')
-            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
-            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
-            sys.exit(0)
-
-        except requests.ConnectionError:
-            logger.critical('Error: URL can no longer be reached..')
-            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
-            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
-            sys.exit(0)
-
         except Exception as e:
-            logger.critical('Error: {0}'.format(e))
-            logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
-            logger.info(f"Successful Records:\n{', '.join(self.successful_requests)}")
+
+            if(not self.printed_results):
+                with self.log_mutex:
+                    self.printed_results = True
+                    # logger.critical('Error: {0}'.format(e))
+                    logger.info("--------------------")
+                    logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
+                    # logger.error(type(self.successful_requests))
+                    # logger.info(self.successful_requests)
+                    logger.info(f"Successful Records:\n----------------\n{',\n'.join([json.dumps(x) for x in self.successful_requests])}")
+            self.is_running = False
             sys.exit(0)
             # print('Error: {0}'.format(e))
 
 
-def run(credential_test):
-    while True:
+def run(credential_test, run_event):
+    while run_event.is_set():
         credential_test.try_credentials()
 
 if __name__ == '__main__':
@@ -242,11 +233,30 @@ if __name__ == '__main__':
     credential_generator = CredentialGenerator()
     credential_tester = CredentialTester(url, form_data)
     running_threads = []
+
     try:
+        run_event = srv.threading.Event()
+        run_event.set()
+        logger = srv.logging.getLogger("main-app")
+        logger.info(f"Starting with {threads} threads and URL: {url}...")
         for _ in range(threads):
-            t = threading.Thread(target=run, args=(credential_tester,))
+            t = threading.Thread(target=run, args=(credential_tester, run_event,))
             t.start()
             running_threads.append(t)
+
     except KeyboardInterrupt:
+        logger.info("KeyboardInterrupt detected... Shutting down threads...")
+        for i in tqdm([1,2,3,4,5]):
+            time.sleep(.2)
+        run_event.clear()
         for t in running_threads:
             t.join()
+        if(not credential_tester.printed_results):
+            with credential_tester.log_mutex:
+                credential_tester.printed_results = True
+                # logger.critical('Error: {0}'.format(e))
+                logger.info("--------------------")
+                logger.info(f"TOTAL Records Sent: {credential_tester.records_sent}. Total Successful Records Sent: {credential_tester.success_count}")
+                # logger.error(type(self.successful_requests))
+                # logger.info(self.successful_requests)
+                logger.info(f"Successful Records:\n----------------\n{',\n'.join([json.dumps(x) for x in credential_tester.successful_requests])}")
