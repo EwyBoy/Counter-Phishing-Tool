@@ -1,3 +1,7 @@
 .idea/
 .DS_Store
 targets.txt
+/logs
+/test_server/logs
+/logs
+*.pyc

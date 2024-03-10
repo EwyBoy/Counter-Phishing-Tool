@@ -3,13 +3,18 @@
 This project is an offensive and proactive tool designed to disrupt phishing attacks by flooding fake phishing websites' login portals with a deluge of fake user data. It's a tool crafted for cybersecurity professionals to actively combat and mitigate risks associated with phishing attacks.
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Features](#features)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Disclaimer](#disclaimer)
-- [License](#license)
+- [Counter Phishing Tool](#counter-phishing-tool)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Scriptable formdata payload](#scriptable-formdata-payload)
+    - [Example](#example)
+    - [Supported Keywords](#supported-keywords)
+  - [Setup](#setup)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [Disclaimer](#disclaimer)
+  - [License](#license)
 
 ## Introduction
 The Counter Phishing Tool is a Python-based tool tailored to inundate phishing websites with fake credentials. By proactively overwhelming them with bogus data, it aims to disrupt and thwart phishing scams before they can ensnare unsuspecting users.
@@ -19,6 +24,7 @@ The Counter Phishing Tool is a Python-based tool tailored to inundate phishing w
 - **Automated Login Attempts**: Automatically bombards login pages of phishing websites with the generated credentials.
 - **Configurable Threads**: Supports threading for efficient parallel processing.
 - **Customizable**: Allows customization of the login form data payload.
+- **Test Server**: Used to verify logger functionality and show how your payload is being viewed on a simple http server.
 
 ## Scriptable formdata payload
 The `form_data.json` file contains the payload to be sent to the phishing website's login form. The payload should be modified according to the login form fields of the phishing website. The following is an example of a payload for a login form with fields for `email` and `password`:
@@ -57,9 +63,11 @@ The `form_data.json` file contains the payload to be sent to the phishing websit
 4. **Run the Script**: Execute the script by running `python counter_phisher.py`.
 
 ## Usage
+`python counter_phisher.py [-ts]`
 1. **Enter Phishing Website URL**: Provide the URL of the fake phishing website's login portal you want to target.
 2. **Set Number of Threads**: Specify the number of threads to be used for targeting.
 3. **Review Results**: Examine the console output for potential successful login attempts or error messages indicating unreachable URLs.
+4. **[OPTIONAL]** -ts: Test the functionality of the logger
 
 ## Contributing
 Contributions are encouraged! If you encounter any issues or have ideas for enhancements, feel free to open an issue or submit a pull request.
