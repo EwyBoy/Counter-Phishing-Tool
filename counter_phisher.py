@@ -184,7 +184,6 @@ class CredentialTester:
             else:
                 with self.log_mutex:
                     logger.warn(f'[Record:{self.records_sent}]{r.status_code} {r.reason} - {parsed_form_data}')
-                # print(f'[Record:{self.records_sent}]{r.status_code} {r.reason} - {parsed_form_data}')
                 self.update_records_sent()
 
         except Exception as e:
@@ -192,15 +191,12 @@ class CredentialTester:
             if(not self.printed_results):
                 with self.log_mutex:
                     self.printed_results = True
-                    # logger.critical('Error: {0}'.format(e))
+
                     logger.info("--------------------")
                     logger.info(f"TOTAL Records Sent: {self.records_sent}. Total Successful Records Sent: {self.success_count}")
-                    # logger.error(type(self.successful_requests))
-                    # logger.info(self.successful_requests)
                     logger.info(f"Successful Records:\n----------------\n{',\n'.join([json.dumps(x) for x in self.successful_requests])}")
             self.is_running = False
             sys.exit(0)
-            # print('Error: {0}'.format(e))
 
 
 def run(credential_test, run_event):
@@ -246,17 +242,13 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         logger.info("KeyboardInterrupt detected... Shutting down threads...")
-        for i in tqdm([1,2,3,4,5]):
-            time.sleep(.2)
         run_event.clear()
-        for t in running_threads:
-            t.join()
+        for i in tqdm(running_threads):
+            i.join()
+
         if(not credential_tester.printed_results):
             with credential_tester.log_mutex:
                 credential_tester.printed_results = True
-                # logger.critical('Error: {0}'.format(e))
                 logger.info("--------------------")
                 logger.info(f"TOTAL Records Sent: {credential_tester.records_sent}. Total Successful Records Sent: {credential_tester.success_count}")
-                # logger.error(type(self.successful_requests))
-                # logger.info(self.successful_requests)
                 logger.info(f"Successful Records:\n----------------\n{',\n'.join([json.dumps(x) for x in credential_tester.successful_requests])}")

@@ -1,7 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging, threading, datetime, os
 
-
+### This file sets up a test server for use in verifying the logger functionality. It also contains the necessary imports to
+# ensure the logger is setup and initialized for the whole program.
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
