@@ -2,7 +2,7 @@ import datetime
 import json
 import random
 import string
-import threading
+import concurrent.futures
 import uuid
 
 import requests
@@ -88,7 +88,7 @@ class CredentialGenerator:
         return str(random.randint(0, 9))
 
     def generate_random_number(self, length=6):
-        return ''.join(random.choice(string.digits) for _ in range(length))
+        return ''.join(random.choices(string.digits, k=length))
 
     def generate_random_boolean(self):
         return str(random.choice([True, False]))
@@ -100,7 +100,7 @@ class CredentialGenerator:
         return random.choice(string.ascii_letters)
 
     def generate_random_string(self, length=6):
-        return ''.join(random.choice(string.ascii_letters) for _ in range(length))
+        return ''.join(random.choices(string.ascii_letters, k=length))
 
     def generate_random_date(self):
         return f'{random.randint(1, 31)}/{random.randint(1, 12)}/{random.randint(1900, datetime.date.today().year)}'
@@ -170,10 +170,11 @@ if __name__ == '__main__':
 
     with open(form_data_file, 'r') as f:
         form_data = json.load(f)
-
+        
     credential_generator = CredentialGenerator()
     credential_tester = CredentialTester(url, form_data)
 
+    pool = concurrent.futures.ThreadPoolExecutor(max_workers=threads)
+    
     for _ in range(threads):
-        t = threading.Thread(target=run, args=(credential_tester,))
-        t.start()
+        pool.submit(run,credential_tester)
